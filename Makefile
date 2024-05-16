@@ -13,9 +13,17 @@ OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 all: $(EXE)
 
-$(OBJ_DIR)/%.o: %.c
+# Create directories if they don't exist
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/modules:
+	mkdir -p $(OBJ_DIR)/modules
+
+# Compile source files into object files
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR) $(OBJ_DIR)/modules
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Link object files into executable
 $(EXE): $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ -lpng
 	
